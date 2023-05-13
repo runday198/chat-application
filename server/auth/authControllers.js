@@ -12,7 +12,7 @@ export async function postSignup(req, res, next) {
   var { email, username, password } = req.body;
 
   try {
-    let hashedPass = bcrypt.hash(password, 12);
+    let hashedPass = await bcrypt.hash(password, 12);
 
     await User.create({
       email,
@@ -20,9 +20,9 @@ export async function postSignup(req, res, next) {
       password: hashedPass,
     });
 
-    return res.status(200);
+    return res.status(200).json();
   } catch (err) {
-    res.status(500);
+    res.status(500).json();
     next(err);
   }
 }

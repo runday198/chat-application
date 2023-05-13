@@ -3,6 +3,8 @@ import { body } from "express-validator";
 
 import * as authControllers from "./authControllers.js";
 
+import User from "../models/user.js";
+
 const router = express.Router();
 
 router.post(
