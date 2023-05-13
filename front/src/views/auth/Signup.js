@@ -27,14 +27,15 @@ export async function action({ request }) {
       }),
     });
 
-    if (resData.status === 400) {
-      let res = await resData.json();
+    let res = await resData.json();
 
+    if (resData.status === 400) {
       return { ...res, success: false, source: "client" };
-    } else if (resData.status === 500) {
-      return { success: false, source: "server" };
     } else if (resData.status === 200) {
+      localStorage.setItem("token", res.token);
       return { success: true };
+    } else {
+      return { success: false, source: "server" };
     }
   } catch (err) {
     console.log(err);
