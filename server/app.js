@@ -10,6 +10,7 @@ import sequelize from "./util/database.js";
 import User from "./models/user.js";
 
 import * as authRoutes from "./auth/authRoutes.js";
+import { logErrorMiddleware } from "./errors/errorHandler.js";
 
 dotenv.config();
 
@@ -32,6 +33,8 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 app.use(authRoutes.default);
+
+app.use(logErrorMiddleware);
 
 const PORT = process.env.PORT || 5000;
 

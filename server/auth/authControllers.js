@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
 import User from "../models/user.js";
+import Api500Error from "../errors/Api500Error.js";
 
 dotenv.config();
 
@@ -26,8 +27,9 @@ export async function postSignup(req, res, next) {
 
     return res.status(200).json();
   } catch (err) {
-    res.status(500).json();
-    next(err);
+    let error = new Api500Error(err);
+
+    next(error);
   }
 }
 
@@ -43,7 +45,7 @@ export async function postLogin(req, res, next) {
 
     return res.status(200).json({ token });
   } catch (err) {
-    res.status(500).json();
-    next(err);
+    let error = new Api500Error(err);
+    next(error);
   }
 }
