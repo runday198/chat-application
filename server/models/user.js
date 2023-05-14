@@ -20,6 +20,20 @@ const User = sequelize.define("user", {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  status: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+  inviteToken: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  exposure: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+  },
 });
 
 export default User;

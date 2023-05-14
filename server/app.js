@@ -2,12 +2,12 @@ import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import helmet from "helmet";
-import { Server } from "socket.io";
 import http from "http";
 import cors from "cors";
 
 import sequelize from "./util/database.js";
 import User from "./models/user.js";
+import { initializeSocket } from "./socket.js";
 
 import * as authRoutes from "./auth/authRoutes.js";
 import { logErrorMiddleware } from "./errors/errorHandler.js";
@@ -16,11 +16,7 @@ dotenv.config();
 
 const app = express();
 const httpServer = http.createServer(app);
-const io = new Server(httpServer, {
-  cors: {
-    origin: process.env.CORS_ORIGIN,
-  },
-});
+initializeSocket(httpServer);
 
 app.use(
   cors({

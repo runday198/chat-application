@@ -2,6 +2,7 @@ import { validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import crypto from "crypto";
 
 import User from "../models/user.js";
 import Api500Error from "../errors/Api500Error.js";
@@ -18,14 +19,16 @@ export async function postSignup(req, res, next) {
 
   try {
     let hashedPass = await bcrypt.hash(password, 12);
+    let inviteToken = crypto.randomBytes(16).toString("hex");
 
     await User.create({
       email,
       username,
       password: hashedPass,
+      inviteToken,
     });
 
-    return res.status(200).json();
+    return res.status(200).json({ success: true });
   } catch (err) {
     let error = new Api500Error(err);
 
@@ -42,6 +45,9 @@ export async function postLogin(req, res, next) {
 
   try {
     let token = jwt.sign({ userId: req.user.id }, process.env.JWT_SECRET);
+
+    req.user.status = true;
+    await req.user.save();
 
     return res.status(200).json({ token });
   } catch (err) {

@@ -25,10 +25,11 @@ export async function action({ request }) {
       }),
     });
 
+    let res = await resData.json();
     if (resData.status === 400) {
-      let res = await resData.json();
       return { ...res, source: "client" };
     } else if (resData.status === 200) {
+      localStorage.setItem("token", res.token);
       return redirect("/home");
     } else {
       return { source: "server" };
