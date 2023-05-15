@@ -1,0 +1,22 @@
+.search-container {
+  width: 100%;
+  margin-top: 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-bar {
+  width: 80%;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.6rem;
+
+  background-color: #495057;
+  color: #fff;
+}
+
+.search-bar::placeholder {
+  color: #adb5bd;
+}

@@ -1,3 +1,7 @@
 .sidebar-container {
   height: 100vh;
+  padding: 2rem;
+
+  background-color: #343a40;
+  color: #e9ecef;
 }

@@ -1,0 +1,40 @@
+.top-container {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #495057;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.header {
+  font-size: 2.6rem;
+}
+
+.group-icon {
+  width: 3rem;
+  height: 3rem;
+}
+
+.nav-container {
+  display: flex;
+  gap: 3rem;
+
+  margin-top: 1rem;
+  padding: 0 10%;
+}
+
+.nav-button {
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.6rem;
+
+  background-color: #adb5bd;
+  color: #000;
+}
