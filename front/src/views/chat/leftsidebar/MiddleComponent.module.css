@@ -1,0 +1,8 @@
+.middle-container {
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  height: 60%;
+  overflow-x: auto;
+}
