@@ -8,6 +8,12 @@ import Login, { action as loginAction } from "./views/auth/Login";
 import Signup, { action as signupAction } from "./views/auth/Signup";
 import Home from "./views/chat/Home";
 
+// auth checkers
+import RequireAuth, {
+  loader as requireAuthLoader,
+} from "./helpers/RequireAuth";
+import RequireNotAuth from "./helpers/RequireNotAuth";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -15,17 +21,30 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/login",
-        element: <Login />,
+        element: (
+          <RequireNotAuth>
+            <Login />
+          </RequireNotAuth>
+        ),
         action: loginAction,
       },
       {
         path: "/signup",
-        element: <Signup />,
+        element: (
+          <RequireNotAuth>
+            <Signup />
+          </RequireNotAuth>
+        ),
         action: signupAction,
       },
       {
         path: "/home",
-        element: <Home />,
+        element: (
+          <RequireAuth>
+            <Home />
+          </RequireAuth>
+        ),
+        loader: requireAuthLoader,
       },
     ],
   },

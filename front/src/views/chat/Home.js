@@ -29,6 +29,12 @@ const chats = [
   },
 ];
 
+const user = {
+  username: "runday198",
+  exposure: true,
+  inviteToken: "5e86afd31edd126daf2f25b99ba4872e",
+};
+
 function Home() {
   return (
     <div className={styles["home-container"]}>

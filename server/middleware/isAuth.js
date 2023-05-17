@@ -1,8 +1,6 @@
 import jwt from "jsonwebtoken";
-import User from "../models/user";
+import User from "../models/user.js";
 import dotenv from "dotenv";
-import Api404Error from "../errors/Api404Error.js";
-import Api400Error from "../errors/Api400Error.js";
 
 dotenv.config();
 
@@ -10,22 +8,24 @@ export default async function isAuth(req, res, next) {
   try {
     let authHeader = req.get("Authorization");
     if (!authHeader) {
-      throw new Api400Error("Is not Authorized");
+      return res.status(400).json({ success: false });
     }
 
     let token = authHeader.split(" ")[1];
 
+    console.log("HERE");
     let isLoggedIn = jwt.verify(token, process.env.JWT_SECRET);
     let userId = isLoggedIn.userId;
 
     let user = await User.findByPk(userId);
     if (!user) {
-      throw new Api404Error("Could not find the user");
+      return res.status(404).json({ success: false });
     }
 
     req.user = user;
     next();
   } catch (err) {
+    console.log("HERE");
     next(err);
   }
 }

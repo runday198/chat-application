@@ -55,3 +55,7 @@ export async function postLogin(req, res, next) {
     next(error);
   }
 }
+
+export function postCheckUser(req, res, next) {
+  return res.status(200).json({ success: true });
+}
