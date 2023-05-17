@@ -8,7 +8,7 @@ function LeftSideBar(props) {
     <div className={styles["sidebar-container"]}>
       <TopComponent chats={props.chats} />
       <MiddleComponent chats={props.chats} />
-      <BottomComponent />
+      <BottomComponent user={props.user} />
     </div>
   );
 }

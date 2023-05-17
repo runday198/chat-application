@@ -38,7 +38,7 @@ const user = {
 function Home() {
   return (
     <div className={styles["home-container"]}>
-      <LeftSideBar chats={chats} />
+      <LeftSideBar chats={chats} user={user} />
     </div>
   );
 }

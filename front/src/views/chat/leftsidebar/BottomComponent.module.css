@@ -1,0 +1,41 @@
+.bottom-container {
+  padding: 0 10%;
+  padding-top: 0.5rem;
+  font-size: 1.4rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  border-top: 1px solid #495057;
+}
+
+.settings-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.actions-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.icon-container {
+  padding: 0.5rem;
+  border-radius: 0.6rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-container:hover {
+  background-color: #495057;
+}
+
+.icon {
+  width: 2rem;
+  height: 2rem;
+}
