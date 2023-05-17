@@ -7,6 +7,7 @@ import Root from "./views/Root";
 import Login, { action as loginAction } from "./views/auth/Login";
 import Signup, { action as signupAction } from "./views/auth/Signup";
 import Home from "./views/chat/Home";
+import Logout from "./views/auth/Logout";
 
 // auth checkers
 import RequireAuth, {
@@ -45,6 +46,12 @@ const router = createBrowserRouter([
           </RequireAuth>
         ),
         loader: requireAuthLoader,
+        children: [
+          {
+            path: "/home/logout",
+            element: <Logout />,
+          },
+        ],
       },
     ],
   },

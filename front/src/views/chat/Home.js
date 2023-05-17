@@ -1,3 +1,5 @@
+import { Outlet } from "react-router-dom";
+
 import styles from "./Home.module.css";
 
 import LeftSideBar from "./leftsidebar/LeftSideBar";
@@ -39,6 +41,7 @@ function Home() {
   return (
     <div className={styles["home-container"]}>
       <LeftSideBar chats={chats} user={user} />
+      <Outlet />
     </div>
   );
 }

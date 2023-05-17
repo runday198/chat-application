@@ -33,9 +33,22 @@
 
 .icon-container:hover {
   background-color: #495057;
+  cursor: pointer;
 }
 
 .icon {
   width: 2rem;
   height: 2rem;
+}
+
+.logout {
+  color: rgb(243, 56, 56);
+}
+
+.lock {
+  color: rgb(243, 56, 56);
+}
+
+.unlock {
+  color: rgb(0, 245, 0);
 }

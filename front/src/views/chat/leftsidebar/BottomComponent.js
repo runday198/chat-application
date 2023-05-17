@@ -12,8 +12,12 @@ function BottomComponent(props) {
       <div className={styles["settings-container"]}>
         <p className={styles["username"]}>{user.username}</p>
         <div className={styles["icon-container"]}>
-          {isLocked && <FiLock className={styles["icon"]} />}
-          {!isLocked && <FiUnlock className={styles["icon"]} />}
+          {isLocked && (
+            <FiLock className={`${styles["icon"]} ${styles["lock"]}`} />
+          )}
+          {!isLocked && (
+            <FiUnlock className={`${styles["icon"]} ${styles["unlock"]}`} />
+          )}
         </div>
       </div>
       <div className={styles["actions-container"]}>
@@ -21,7 +25,7 @@ function BottomComponent(props) {
           <FiUserPlus className={styles["icon"]} />
         </div>
         <div className={styles["icon-container"]}>
-          <FiLogOut className={styles["icon"]} />
+          <FiLogOut className={`${styles["icon"]} ${styles["logout"]}`} />
         </div>
       </div>
     </div>
