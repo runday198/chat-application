@@ -1,32 +1,56 @@
 import styles from "./BottomComponent.module.css";
 import { FiLock, FiUnlock, FiUserPlus, FiLogOut } from "react-icons/fi";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function BottomComponent(props) {
   var { user } = props;
 
   var [isLocked, setIsLocked] = useState(!user.exposure);
+  var [tokenBox, setTokenBox] = useState(false);
+
+  function usernameClickHandler(event) {
+    setTokenBox((state) => !state);
+  }
 
   return (
     <div className={styles["bottom-container"]}>
       <div className={styles["settings-container"]}>
-        <p className={styles["username"]}>{user.username}</p>
+        <p className={styles["username"]} onClick={usernameClickHandler}>
+          {user.username}
+        </p>
+        <div
+          className={`${styles["token-box"]} ${tokenBox ? styles["on"] : ""}`}
+        >
+          {user.inviteToken}
+        </div>
         <div className={styles["icon-container"]}>
           {isLocked && (
             <FiLock className={`${styles["icon"]} ${styles["lock"]}`} />
           )}
+          <div className={`${styles["info"]} ${styles["lock-box"]}`}>
+            When locked, others won't be able to look you up with your username,
+            they will need your invite token.
+          </div>
           {!isLocked && (
             <FiUnlock className={`${styles["icon"]} ${styles["unlock"]}`} />
           )}
+          <div className={`${styles["info"]} ${styles["lock-box"]}`}>
+            When unlocked, others will be able to look you up with your
+            username.
+          </div>
         </div>
       </div>
       <div className={styles["actions-container"]}>
         <div className={styles["icon-container"]}>
           <FiUserPlus className={styles["icon"]} />
+          <div className={`${styles["info"]} ${styles["contact-box"]}`}>
+            Add Contacts
+          </div>
         </div>
-        <div className={styles["icon-container"]}>
+        <Link to="/home/logout" className={styles["icon-container"]}>
           <FiLogOut className={`${styles["icon"]} ${styles["logout"]}`} />
-        </div>
+        </Link>
       </div>
     </div>
   );

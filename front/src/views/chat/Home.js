@@ -37,10 +37,29 @@ const user = {
   inviteToken: "5e86afd31edd126daf2f25b99ba4872e",
 };
 
+const requests = [
+  {
+    id: 1,
+    name: "Req head 1",
+    lastMessage: "This is a test message",
+    sender: "Username",
+    seen: false,
+    createdAt: "14:53",
+  },
+  {
+    id: 2,
+    name: "Req head 2",
+    lastMessage: "This is a test message",
+    sender: "runday198",
+    seen: false,
+    createdAt: "14:53",
+  },
+];
+
 function Home() {
   return (
     <div className={styles["home-container"]}>
-      <LeftSideBar chats={chats} user={user} />
+      <LeftSideBar chats={chats} user={user} requests={requests} />
       <Outlet />
     </div>
   );

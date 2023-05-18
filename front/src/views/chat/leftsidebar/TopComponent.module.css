@@ -18,6 +18,20 @@
   font-size: 2.6rem;
 }
 
+.icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.5rem;
+  border-radius: 0.6rem;
+}
+
+.icon-container:hover {
+  cursor: pointer;
+  background-color: #495057;
+}
+
 .group-icon {
   width: 3rem;
   height: 3rem;
@@ -32,9 +46,19 @@
 }
 
 .nav-button {
-  padding: 0.5rem 0.8rem;
-  border-radius: 0.6rem;
+  font-size: 1.4rem;
 
-  background-color: #adb5bd;
-  color: #000;
+  background-color: #495057;
+
+  padding: 0.6rem 1rem;
+  border-radius: 0.6rem;
+}
+
+.nav-button:hover {
+  cursor: pointer;
+  background-color: #212529;
+}
+
+.active {
+  background-color: #212529;
 }
