@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import styles from "./Home.module.css";
 
 import LeftSideBar from "./leftsidebar/LeftSideBar";
+import Middle from "./middle/Middle";
 
 const chats = [
   {
@@ -28,6 +29,81 @@ const chats = [
     sender: "Username",
     seen: true,
     createdAt: "14:53",
+  },
+];
+
+// messages array will contain objects with the following structure:
+// {
+//   id: 1,
+//   sender: "Username",
+//   message: "This is a test message",
+//   date: "14:53",
+//   isSender: false,
+// }
+
+const messages = [
+  {
+    id: 1,
+    sender: "Username",
+    message: "This is a test message",
+    date: "14:53",
+    isSender: false,
+  },
+  {
+    id: 2,
+    sender: "runday198",
+    message: "This is a test message",
+    date: "14:53",
+    isSender: true,
+  },
+  {
+    id: 3,
+    sender: "Username",
+    message: "This is a test message",
+    date: "14:53",
+    isSender: false,
+  },
+  {
+    id: 1,
+    sender: "Username",
+    message: "This is a test message",
+    date: "14:53",
+    isSender: false,
+  },
+  {
+    id: 2,
+    sender: "runday198",
+    message: "This is a test message",
+    date: "14:53",
+    isSender: true,
+  },
+  {
+    id: 3,
+    sender: "Username",
+    message: "This is a test message",
+    date: "14:53",
+    isSender: false,
+  },
+  {
+    id: 1,
+    sender: "Username",
+    message: "This is a test message",
+    date: "14:53",
+    isSender: false,
+  },
+  {
+    id: 2,
+    sender: "runday198",
+    message: "This is a test message",
+    date: "14:53",
+    isSender: true,
+  },
+  {
+    id: 3,
+    sender: "Username",
+    message: "This is a test message",
+    date: "14:53",
+    isSender: false,
   },
 ];
 
@@ -60,6 +136,7 @@ function Home() {
   return (
     <div className={styles["home-container"]}>
       <LeftSideBar chats={chats} user={user} requests={requests} />
+      <Middle messages={messages} />
       <Outlet />
     </div>
   );

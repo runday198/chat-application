@@ -1,0 +1,36 @@
+.middle-top-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 8%;
+
+  padding: 1rem 5rem;
+
+  font-size: 1.4rem;
+
+  color: #e9ecef;
+
+  border-bottom: 1px solid #6c757d;
+}
+
+.chat-settings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 2.5rem;
+  height: 2.5rem;
+
+  border-radius: 50%;
+}
+
+.chat-settings-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+
+  cursor: pointer;
+}
+
+.chat-settings-icon:hover {
+  color: #adb5bd;
+}
