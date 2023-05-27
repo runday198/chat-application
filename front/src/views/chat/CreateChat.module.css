@@ -1,0 +1,99 @@
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+
+  background-color: rgba(0, 0, 0, 0.8);
+
+  height: 100vh;
+  width: 100vw;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  width: 30%;
+  height: 40%;
+  padding: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  background-color: #343a40;
+  border-radius: 0.6rem;
+}
+
+.header {
+  color: #eeeeee;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.4rem;
+
+  width: 60%;
+
+  gap: 1.5rem;
+}
+
+.input-container {
+  color: #eeeeee;
+
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.name {
+  background-color: #343a40;
+  color: #eeeeee;
+  border-radius: 0.6rem;
+
+  padding: 0.5rem;
+
+  border: 1px solid #495057;
+}
+
+.button-container {
+  align-self: flex-end;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.submit-button {
+  padding: 0.5rem 1rem;
+  background-color: #eeeeee;
+  color: #000;
+
+  border-radius: 0.6rem;
+}
+
+.cancel-button {
+  padding: 0.5rem 1rem;
+  background-color: #343a40;
+  color: #eeeeee;
+
+  border-radius: 0.6rem;
+}
+
+.cancel-button:hover {
+  cursor: pointer;
+  background-color: #212529;
+  text-decoration: none;
+}
+
+.submit-button:hover {
+  cursor: pointer;
+  background-color: #ced4da;
+  text-decoration: none;
+}

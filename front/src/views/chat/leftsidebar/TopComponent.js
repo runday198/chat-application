@@ -4,13 +4,13 @@ import { useState } from "react";
 import { IoCreateOutline } from "react-icons/io5";
 
 import SearchBar from "./SearchBar";
+import { Link } from "react-router-dom";
 
 function TopComponent(props) {
   var [inboxActive, setInboxActive] = useState(true);
   var [requestsActive, setRequestsActive] = useState(false);
 
   function categoryClickHandler(event) {
-    console.log(event);
     if (event.target.innerHTML === "Inbox") {
       setInboxActive(true);
       setRequestsActive(false);
@@ -25,9 +25,9 @@ function TopComponent(props) {
     <div className={styles["top-container"]}>
       <div className={styles["header-container"]}>
         <h1 className={styles["header"]}>Chats</h1>
-        <div className={styles["icon-container"]}>
+        <Link to="/home/create-chat" className={styles["icon-container"]}>
           <IoCreateOutline className={styles["group-icon"]} />
-        </div>
+        </Link>
       </div>
       <SearchBar />
       <div className={styles["nav-container"]}>

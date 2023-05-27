@@ -7,9 +7,15 @@ import cors from "cors";
 
 import sequelize from "./util/database.js";
 import User from "./models/user.js";
+import ChatUser from "./models/chatUser.js";
+import Chat from "./models/chat.js";
+import Message from "./models/message.js";
+
 import { initializeSocket } from "./socket.js";
 
 import * as authRoutes from "./auth/authRoutes.js";
+import * as chatRoutes from "./chat/chatRoutes.js";
+
 import { logErrorMiddleware } from "./errors/errorHandler.js";
 
 dotenv.config();
@@ -29,10 +35,18 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 app.use(authRoutes.default);
+app.use(chatRoutes.default);
 
 app.use(logErrorMiddleware);
 
 const PORT = process.env.PORT || 5000;
+
+User.belongsToMany(Chat, { through: ChatUser });
+Chat.belongsToMany(User, { through: ChatUser });
+User.hasMany(Message, { onDelete: "CASCADE" });
+Message.belongsTo(User);
+Chat.hasMany(Message, { onDelete: "CASCADE" });
+Message.belongsTo(Chat);
 
 sequelize
   .sync()

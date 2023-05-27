@@ -1,9 +1,14 @@
+import convertDate from "../../../helpers/convertDate";
 import styles from "./ChatHead.module.css";
 import { Link } from "react-router-dom";
 
 function ChatHead(props) {
   var { head } = props;
   var link = `/home/chat/${head.id}`;
+
+  var date = new Date(head.updatedAt);
+
+  date = convertDate(date);
 
   return (
     <Link className={styles["head-container"]} to={link}>
@@ -21,11 +26,12 @@ function ChatHead(props) {
             head.seen ? styles["passive"] : styles["active"]
           }`}
         >
-          {head.sender}: {head.lastMessage}
+          {head.sender}
+          {head.sender ? ":" : ""} {head.lastMessage}
         </p>
       </div>
       <div className={styles["date-container"]}>
-        <p className={styles["date"]}>{head.createdAt}</p>
+        <p className={styles["date"]}>{date}</p>
       </div>
     </Link>
   );

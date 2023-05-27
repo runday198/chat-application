@@ -1,143 +1,42 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLoaderData } from "react-router-dom";
+import { useState } from "react";
 
 import styles from "./Home.module.css";
 
 import LeftSideBar from "./leftsidebar/LeftSideBar";
 import Middle from "./middle/Middle";
 
-const chats = [
-  {
-    id: 1,
-    name: "Chat head 1",
-    lastMessage: "This is a test message",
-    sender: "Username",
-    seen: false,
-    createdAt: "14:53",
-  },
-  {
-    id: 2,
-    name: "Chat head 2",
-    lastMessage: "This is a test message",
-    sender: "runday198",
-    seen: true,
-    createdAt: "14:53",
-  },
-  {
-    id: 3,
-    name: "Chat head 3",
-    lastMessage: "This is a test message",
-    sender: "Username",
-    seen: true,
-    createdAt: "14:53",
-  },
-];
+export async function loader() {
+  try {
+    let resData = await fetch("http://localhost:5000/user", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
 
-// messages array will contain objects with the following structure:
-// {
-//   id: 1,
-//   sender: "Username",
-//   message: "This is a test message",
-//   date: "14:53",
-//   isSender: false,
-// }
+    let res = await resData.json();
 
-const messages = [
-  {
-    id: 1,
-    sender: "Username",
-    message: "This is a test message",
-    date: "14:53",
-    isSender: false,
-  },
-  {
-    id: 2,
-    sender: "runday198",
-    message: "This is a test message",
-    date: "14:53",
-    isSender: true,
-  },
-  {
-    id: 3,
-    sender: "Username",
-    message: "This is a test message",
-    date: "14:53",
-    isSender: false,
-  },
-  {
-    id: 1,
-    sender: "Username",
-    message: "This is a test message",
-    date: "14:53",
-    isSender: false,
-  },
-  {
-    id: 2,
-    sender: "runday198",
-    message: "This is a test message",
-    date: "14:53",
-    isSender: true,
-  },
-  {
-    id: 3,
-    sender: "Username",
-    message: "This is a test message",
-    date: "14:53",
-    isSender: false,
-  },
-  {
-    id: 1,
-    sender: "Username",
-    message: "This is a test message",
-    date: "14:53",
-    isSender: false,
-  },
-  {
-    id: 2,
-    sender: "runday198",
-    message: "This is a test message",
-    date: "14:53",
-    isSender: true,
-  },
-  {
-    id: 3,
-    sender: "Username",
-    message: "This is a test message",
-    date: "14:53",
-    isSender: false,
-  },
-];
-
-const user = {
-  username: "runday198",
-  exposure: true,
-  inviteToken: "5e86afd31edd126daf2f25b99ba4872e",
-};
-
-const requests = [
-  {
-    id: 1,
-    name: "Req head 1",
-    lastMessage: "This is a test message",
-    sender: "Username",
-    seen: false,
-    createdAt: "14:53",
-  },
-  {
-    id: 2,
-    name: "Req head 2",
-    lastMessage: "This is a test message",
-    sender: "runday198",
-    seen: false,
-    createdAt: "14:53",
-  },
-];
+    return res;
+  } catch (err) {
+    console.log(err);
+    return { success: false };
+  }
+}
 
 function Home() {
+  var loaderData = useLoaderData();
+  const [chatHeads, setChatHeads] = useState(loaderData.chats);
+  const [requestHeads, setRequestHeads] = useState([]);
+  console.log(loaderData);
+
+  var user = loaderData.user;
+
   return (
     <div className={styles["home-container"]}>
-      <LeftSideBar chats={chats} user={user} requests={requests} />
-      <Middle messages={messages} />
-      <Outlet />
+      <LeftSideBar chats={chatHeads} user={user} requests={requestHeads} />
+      <Middle messages={[]} />
+      <Outlet test="test" />
     </div>
   );
 }

@@ -7,7 +7,7 @@ import { useState } from "react";
 
 function LeftSideBar(props) {
   var [activeCategory, setActiveCategory] = useState("Inbox");
-  console.log("TEST");
+
   function categoryClickHandler(event) {
     setActiveCategory(event.target.innerHTML);
   }
