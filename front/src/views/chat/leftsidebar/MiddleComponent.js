@@ -7,7 +7,14 @@ function MiddleComponent(props) {
   return (
     <div className={styles["middle-container"]}>
       {chats.map((chat) => {
-        return <ChatHead head={chat} key={chat.id} />;
+        return (
+          <ChatHead
+            head={chat}
+            key={chat.id}
+            chatClickHandler={props.chatClickHandler}
+            selectedChat={props.selectedChat}
+          />
+        );
       })}
     </div>
   );

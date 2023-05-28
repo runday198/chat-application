@@ -5,8 +5,10 @@ import * as chatControllers from "./chatControllers.js";
 
 const router = express.Router();
 
-router.get("/user", isAuth, chatControllers.getUser);
+router.post("/user", isAuth, chatControllers.getUser);
 
 router.post("/create-chat", isAuth, chatCheck, chatControllers.postCreateChat);
+
+router.post("/messages", isAuth, chatControllers.postMessages);
 
 export default router;

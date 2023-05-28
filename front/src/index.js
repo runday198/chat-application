@@ -12,9 +12,6 @@ import Logout from "./views/auth/Logout";
 // auth checkers
 import RequireAuth from "./helpers/RequireAuth";
 import RequireNotAuth from "./helpers/RequireNotAuth";
-import CreateChat, {
-  action as createChatAction,
-} from "./views/chat/CreateChat";
 
 const router = createBrowserRouter([
   {
@@ -51,11 +48,6 @@ const router = createBrowserRouter([
           {
             path: "/home/logout",
             element: <Logout />,
-          },
-          {
-            path: "/home/create-chat",
-            element: <CreateChat />,
-            action: createChatAction,
           },
         ],
       },

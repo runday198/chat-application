@@ -17,11 +17,25 @@ function LeftSideBar(props) {
       <TopComponent
         chats={props.chats}
         categoryClickHandler={categoryClickHandler}
+        setCreateChat={props.setCreateChat}
       />
-      {activeCategory === "Inbox" && <MiddleComponent chats={props.chats} />}
-      {activeCategory === "Requests" && (
-        <MiddleComponent chats={props.requests} />
+
+      {activeCategory === "Inbox" && (
+        <MiddleComponent
+          chats={props.chats}
+          chatClickHandler={props.chatClickHandler}
+          selectedChat={props.selectedChat}
+        />
       )}
+
+      {activeCategory === "Requests" && (
+        <MiddleComponent
+          chats={props.requests}
+          chatClickHandler={props.chatClickHandler}
+          selectedChat={props.selectedChat}
+        />
+      )}
+
       <BottomComponent user={props.user} />
     </div>
   );

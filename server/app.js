@@ -22,7 +22,7 @@ dotenv.config();
 
 const app = express();
 const httpServer = http.createServer(app);
-initializeSocket(httpServer);
+const io = initializeSocket(httpServer);
 
 app.use(
   cors({

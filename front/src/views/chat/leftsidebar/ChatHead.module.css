@@ -5,8 +5,15 @@
 
   width: 100%;
   border-radius: 0.6rem;
-
   height: 15%;
+
+  z-index: 1;
+
+  cursor: pointer;
+}
+
+.head-container.active {
+  background-color: #495057;
 }
 
 .head-container:hover {

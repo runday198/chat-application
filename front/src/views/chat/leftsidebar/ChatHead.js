@@ -1,17 +1,21 @@
 import convertDate from "../../../helpers/convertDate";
 import styles from "./ChatHead.module.css";
-import { Link } from "react-router-dom";
 
 function ChatHead(props) {
   var { head } = props;
-  var link = `/home/chat/${head.id}`;
-
+  var isSelected = head.id === Number(props.selectedChat);
   var date = new Date(head.updatedAt);
 
   date = convertDate(date);
 
   return (
-    <Link className={styles["head-container"]} to={link}>
+    <div
+      className={`${styles["head-container"]} ${
+        isSelected ? styles["active"] : ""
+      }`}
+      id={head.id}
+      onClick={props.chatClickHandler}
+    >
       <div className={styles["status-container"]}>
         <div
           className={`${styles["status-circle"]} ${
@@ -33,7 +37,7 @@ function ChatHead(props) {
       <div className={styles["date-container"]}>
         <p className={styles["date"]}>{date}</p>
       </div>
-    </Link>
+    </div>
   );
 }
 

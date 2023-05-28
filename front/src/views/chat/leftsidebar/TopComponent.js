@@ -4,7 +4,6 @@ import { useState } from "react";
 import { IoCreateOutline } from "react-icons/io5";
 
 import SearchBar from "./SearchBar";
-import { Link } from "react-router-dom";
 
 function TopComponent(props) {
   var [inboxActive, setInboxActive] = useState(true);
@@ -25,9 +24,12 @@ function TopComponent(props) {
     <div className={styles["top-container"]}>
       <div className={styles["header-container"]}>
         <h1 className={styles["header"]}>Chats</h1>
-        <Link to="/home/create-chat" className={styles["icon-container"]}>
+        <div
+          className={styles["icon-container"]}
+          onClick={() => props.setCreateChat(true)}
+        >
           <IoCreateOutline className={styles["group-icon"]} />
-        </Link>
+        </div>
       </div>
       <SearchBar />
       <div className={styles["nav-container"]}>

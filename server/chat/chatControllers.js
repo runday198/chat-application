@@ -1,6 +1,5 @@
 import Api500Error from "../errors/Api500Error.js";
 import Chat from "../models/chat.js";
-import User from "../models/user.js";
 import { validationResult } from "express-validator";
 
 export async function getUser(req, res, next) {
@@ -28,7 +27,7 @@ export async function postCreateChat(req, res, next) {
   var errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.mapped() });
+    return res.status(400).json({ errors: errors.mapped() });
   }
 
   var { name } = req.body;
@@ -42,7 +41,34 @@ export async function postCreateChat(req, res, next) {
       through: { isAdmin: true, hasAccepted: true },
     });
 
-    return res.status(201).json();
+    return res.status(201).json({ chat: chat });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function postMessages(req, res, next) {
+  var { chatId } = req.body;
+
+  try {
+    var chat = await Chat.findByPk(chatId);
+
+    if (!chat) {
+      return res.status(404).json({ message: "Chat not found" });
+    }
+
+    var messages = await chat.getMessages({
+      order: [["createdAt", "ASC"]],
+      // include: [
+      //   {
+      //     model: req.user,
+      //     as: "sender",
+      //     attributes: ["id", "username"],
+      //   },
+      // ],
+    });
+
+    return res.status(200).json({ messages });
   } catch (err) {
     next(err);
   }

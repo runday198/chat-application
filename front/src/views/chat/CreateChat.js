@@ -1,36 +1,46 @@
-import { Form, Link, redirect } from "react-router-dom";
 import styles from "./CreateChat.module.css";
-import { useActionData } from "react-router-dom";
 import ErrorMessage from "../../components/result/ErrorMessage";
-
-export async function action({ request }) {
-  var formData = await request.formData();
-  var name = formData.get("name");
-  try {
-    let resData = await fetch("http://localhost:5000/create-chat", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name }),
-    });
-    if (resData.status === 201) {
-      return redirect("/home");
-    }
-    let res = await resData.json();
-
-    return { error: res.errors.name.msg };
-  } catch (err) {
-    console.log(err);
-    return { error: "Internal Error" };
-  }
-}
+import { useState } from "react";
 
 function CreateChat(props) {
-  var actionData = useActionData();
+  const [error, setError] = useState(null);
 
-  console.log(props.test);
+  function submitHandler(event) {
+    event.preventDefault();
+    var name = event.target.name.value;
+
+    fetchApi().then((res) => {
+      console.log(res);
+      if (res.error) {
+        setError(res.error);
+      }
+    });
+
+    async function fetchApi() {
+      try {
+        var resData = await fetch("http://localhost:5000/create-chat", {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name }),
+        });
+
+        let res = await resData.json();
+
+        if (resData.status === 201) {
+          props.setChatHeads((prev) => [...prev, res.chat]);
+          props.setCreateChat(false);
+        }
+
+        return { error: res.errors.name.msg };
+      } catch (err) {
+        console.log(err);
+        return { error: "Internal Error" };
+      }
+    }
+  }
 
   return (
     <div className={styles["overlay"]}>
@@ -38,7 +48,7 @@ function CreateChat(props) {
         <div className={styles["header"]}>
           <h1 className={styles["header-text"]}>Create Chat</h1>
         </div>
-        <Form className={styles["form"]} method="POST">
+        <form className={styles["form"]} method="POST" onSubmit={submitHandler}>
           <div className={styles["input-container"]}>
             <label htmlFor="name">Name</label>
             <input
@@ -47,17 +57,20 @@ function CreateChat(props) {
               id="name"
               className={styles["name"]}
             />
-            {actionData?.error && <ErrorMessage message={actionData.error} />}
+            {error && <ErrorMessage message={error} />}
           </div>
           <div className={styles["button-container"]}>
-            <Link to="/home" className={styles["cancel-button"]}>
+            <div
+              className={styles["cancel-button"]}
+              onClick={() => props.setCreateChat(false)}
+            >
               Cancel
-            </Link>
+            </div>
             <button type="submit" className={styles["submit-button"]}>
               Create
             </button>
           </div>
-        </Form>
+        </form>
       </div>
     </div>
   );
