@@ -11,7 +11,7 @@ import ChatUser from "./models/chatUser.js";
 import Chat from "./models/chat.js";
 import Message from "./models/message.js";
 
-import { initializeSocket } from "./socket.js";
+import { initializeSocket } from "./chat/chatSocket.js";
 
 import * as authRoutes from "./auth/authRoutes.js";
 import * as chatRoutes from "./chat/chatRoutes.js";

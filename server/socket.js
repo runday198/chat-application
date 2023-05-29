@@ -23,10 +23,6 @@ export function initializeSocket(httpServer) {
 
   io.on("connection", (socket) => {
     socketInstance = socket;
-    console.log("Socket connected", socket.token);
+    console.log("Socket connected at", socket.token);
   });
-}
-
-export function getSocket() {
-  return socketInstance;
 }

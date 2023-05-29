@@ -1,6 +1,7 @@
 import { Outlet, useLoaderData } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import { AuthContext } from "../../contexts";
 
 import styles from "./Home.module.css";
 
@@ -28,17 +29,10 @@ export async function loader() {
 
 function Home() {
   var loaderData = useLoaderData();
+  var user = loaderData.user;
 
-  useEffect(() => {
-    var socket = io("http://localhost:5000", {
-      auth: {
-        token: localStorage.getItem("token"),
-      },
-    });
-
-    socket.emit("hello", { message: "hello" });
-  }, []);
-
+  const [socket, setSocket] = useState(null);
+  const [exposure, setExposure] = useState(user.exposure);
   const [createChat, setCreateChat] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -48,6 +42,22 @@ function Home() {
   const [requestHeads, setRequestHeads] = useState(
     loaderData.chats.filter((chatHeads) => !chatHeads.chatUser.hasAccepted)
   );
+
+  useEffect(() => {
+    let socket = io("http://localhost:5000", {
+      auth: {
+        token: localStorage.getItem("token"),
+      },
+    });
+
+    setSocket(socket);
+
+    socket.on("hello", (data) => {
+      console.log(data);
+    });
+
+    socket.emit("hello", { message: "hello" });
+  }, []);
 
   function chatClickHandler(event) {
     var chatId = event.currentTarget.id;
@@ -83,26 +93,35 @@ function Home() {
     }
   }
 
-  console.log(loaderData);
-
-  var user = loaderData.user;
-
   return (
-    <div className={styles["home-container"]}>
-      <LeftSideBar
-        chats={chatHeads}
-        user={user}
-        requests={requestHeads}
-        setCreateChat={setCreateChat}
-        chatClickHandler={chatClickHandler}
-        selectedChat={selectedChat}
-      />
-      <Middle messages={messages} />
-      <Outlet test="test" />
-      {createChat && (
-        <CreateChat setCreateChat={setCreateChat} setChatHeads={setChatHeads} />
-      )}
-    </div>
+    <AuthContext.Provider value={user}>
+      <div className={styles["home-container"]}>
+        <LeftSideBar
+          chats={chatHeads}
+          user={user}
+          requests={requestHeads}
+          setCreateChat={setCreateChat}
+          chatClickHandler={chatClickHandler}
+          selectedChat={selectedChat}
+          exposure={exposure}
+          socket={socket}
+          setExposure={setExposure}
+        />
+        <Middle
+          messages={messages}
+          selectedChat={selectedChat}
+          socket={socket}
+          setMessages={setMessages}
+        />
+        <Outlet test="test" />
+        {createChat && (
+          <CreateChat
+            setCreateChat={setCreateChat}
+            setChatHeads={setChatHeads}
+          />
+        )}
+      </div>
+    </AuthContext.Provider>
   );
 }
 

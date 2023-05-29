@@ -4,13 +4,18 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 function BottomComponent(props) {
-  var { user } = props;
+  var { user, socket } = props;
+  var isLocked = !props.exposure;
 
-  var [isLocked, setIsLocked] = useState(!user.exposure);
   var [tokenBox, setTokenBox] = useState(false);
 
   function usernameClickHandler(event) {
     setTokenBox((state) => !state);
+  }
+
+  function lockClickHandler() {
+    socket.emit("exposure", { exposure: !props.exposure });
+    props.setExposure((state) => !state);
   }
 
   return (
@@ -26,14 +31,20 @@ function BottomComponent(props) {
         </div>
         <div className={styles["icon-container"]}>
           {isLocked && (
-            <FiLock className={`${styles["icon"]} ${styles["lock"]}`} />
+            <FiLock
+              className={`${styles["icon"]} ${styles["lock"]}`}
+              onClick={lockClickHandler}
+            />
           )}
           <div className={`${styles["info"]} ${styles["lock-box"]}`}>
             When locked, others won't be able to look you up with your username,
             they will need your invite token.
           </div>
           {!isLocked && (
-            <FiUnlock className={`${styles["icon"]} ${styles["unlock"]}`} />
+            <FiUnlock
+              className={`${styles["icon"]} ${styles["unlock"]}`}
+              onClick={lockClickHandler}
+            />
           )}
           <div className={`${styles["info"]} ${styles["lock-box"]}`}>
             When unlocked, others will be able to look you up with your

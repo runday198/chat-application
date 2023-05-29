@@ -3,7 +3,7 @@ import Message from "./Message";
 
 function ChatDisplay(props) {
   var { messages } = props;
-
+  console.log(messages);
   return (
     <div className={styles["chat-display-container"]}>
       {messages.map((message) => {

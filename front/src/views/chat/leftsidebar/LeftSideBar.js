@@ -36,7 +36,12 @@ function LeftSideBar(props) {
         />
       )}
 
-      <BottomComponent user={props.user} />
+      <BottomComponent
+        user={props.user}
+        exposure={props.exposure}
+        socket={props.socket}
+        setExposure={props.setExposure}
+      />
     </div>
   );
 }
