@@ -14,6 +14,11 @@ const Chat = sequelize.define("chat", {
   },
   lastMessage: Sequelize.STRING,
   sender: Sequelize.STRING,
+  isGroupChat: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
 });
 
 export default Chat;

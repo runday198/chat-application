@@ -1,6 +1,6 @@
 import styles from "./SearchBar.module.css";
 
-function SearchBar() {
+function SearchBar(props) {
   return (
     <div className={styles["search-container"]}>
       <input
@@ -8,6 +8,7 @@ function SearchBar() {
         type="text"
         name="search"
         placeholder="Search..."
+        onChange={(event) => props.setSearchTerm(event.target.value)}
       />
     </div>
   );

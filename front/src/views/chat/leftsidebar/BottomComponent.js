@@ -53,7 +53,10 @@ function BottomComponent(props) {
         </div>
       </div>
       <div className={styles["actions-container"]}>
-        <div className={styles["icon-container"]}>
+        <div
+          className={styles["icon-container"]}
+          onClick={() => props.setAddContact(true)}
+        >
           <FiUserPlus className={styles["icon"]} />
           <div className={`${styles["info"]} ${styles["contact-box"]}`}>
             Add Contacts

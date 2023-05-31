@@ -8,6 +8,7 @@ import styles from "./Home.module.css";
 import LeftSideBar from "./leftsidebar/LeftSideBar";
 import Middle from "./middle/Middle";
 import CreateChat from "./CreateChat";
+import AddContact from "./AddContact";
 
 export async function loader() {
   try {
@@ -31,6 +32,7 @@ function Home() {
   var loaderData = useLoaderData();
   var user = loaderData.user;
 
+  const [addContact, setAddContact] = useState(false);
   const [socket, setSocket] = useState(null);
   const [exposure, setExposure] = useState(user.exposure);
   const [createChat, setCreateChat] = useState(false);
@@ -61,11 +63,22 @@ function Home() {
 
   function chatClickHandler(event) {
     var chatId = event.currentTarget.id;
+    var hasSeen = event.currentTarget.dataset.seen;
 
     fetchMessages().then((res) => {
-      console.log(res);
       setMessages(res);
       setSelectedChat(chatId);
+
+      if (!hasSeen) {
+        setChatHeads((chats) => {
+          return chats.map((chat) => {
+            if (chat.id === Number(chatId)) {
+              chat.seen = 1;
+            }
+            return chat;
+          });
+        });
+      }
     });
 
     async function fetchMessages() {
@@ -106,6 +119,7 @@ function Home() {
           exposure={exposure}
           socket={socket}
           setExposure={setExposure}
+          setAddContact={setAddContact}
         />
         <Middle
           messages={messages}
@@ -120,6 +134,7 @@ function Home() {
             setChatHeads={setChatHeads}
           />
         )}
+        {addContact && <AddContact setAddContact={setAddContact} />}
       </div>
     </AuthContext.Provider>
   );

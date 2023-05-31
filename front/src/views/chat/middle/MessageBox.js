@@ -28,7 +28,7 @@ function MessageBox(props) {
           {
             message: message,
             sender: user.username,
-            time: Date.now(),
+            date: Date.now(),
             id: Math.random(),
           },
         ];

@@ -6,6 +6,14 @@
   width: 15rem;
 }
 
+.message-container.right {
+  align-items: flex-end;
+}
+.message-container.right .message,
+.message-container.right .message-info {
+  align-items: flex-end;
+}
+
 .right {
   align-self: flex-end;
 }
@@ -18,9 +26,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  width: 100%;
-  padding: 0.5rem 1rem;
 
   font-size: 1.2rem;
   color: #adb5bd;

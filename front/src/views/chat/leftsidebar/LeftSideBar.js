@@ -7,6 +7,15 @@ import { useState } from "react";
 
 function LeftSideBar(props) {
   var [activeCategory, setActiveCategory] = useState("Inbox");
+  var [searchTerm, setSearchTerm] = useState("");
+
+  var { chats } = props;
+
+  if (searchTerm !== "") {
+    chats = chats.filter((chat) => {
+      return chat.name.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+  }
 
   function categoryClickHandler(event) {
     setActiveCategory(event.target.innerHTML);
@@ -15,14 +24,15 @@ function LeftSideBar(props) {
   return (
     <div className={styles["sidebar-container"]}>
       <TopComponent
-        chats={props.chats}
+        chats={chats}
         categoryClickHandler={categoryClickHandler}
         setCreateChat={props.setCreateChat}
+        setSearchTerm={setSearchTerm}
       />
 
       {activeCategory === "Inbox" && (
         <MiddleComponent
-          chats={props.chats}
+          chats={chats}
           chatClickHandler={props.chatClickHandler}
           selectedChat={props.selectedChat}
         />
@@ -41,6 +51,7 @@ function LeftSideBar(props) {
         exposure={props.exposure}
         socket={props.socket}
         setExposure={props.setExposure}
+        setAddContact={props.setAddContact}
       />
     </div>
   );

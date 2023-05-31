@@ -9,9 +9,7 @@ function registerChatHandlers(io, socket) {
 
   socket.on("exposure", setExposure);
 
-  socket.on("message", (data) => {
-    console.log(data);
-  });
+  socket.on("message", createMessage);
 
   async function setExposure(data) {
     try {
@@ -38,9 +36,14 @@ function registerChatHandlers(io, socket) {
         sender: user.username,
       });
 
+      chat.lastMessage = message;
+      chat.sender = user.username;
+      await chat.save();
+
       io.to("chat:" + chat.id).emit("message", newMessage);
     } catch (err) {
       console.log(err);
+      // TODO: send back error to the client
     }
   }
 }

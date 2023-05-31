@@ -1,6 +1,8 @@
 import Api500Error from "../errors/Api500Error.js";
 import Chat from "../models/chat.js";
 import { validationResult } from "express-validator";
+import User from "../models/user.js";
+import { Op } from "sequelize";
 
 export async function getUser(req, res, next) {
   try {
@@ -25,6 +27,7 @@ export async function getUser(req, res, next) {
 
 export async function postCreateChat(req, res, next) {
   var errors = validationResult(req);
+  var { isGroupChat } = req.body;
 
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.mapped() });
@@ -35,6 +38,7 @@ export async function postCreateChat(req, res, next) {
   try {
     var chat = await Chat.create({
       name: name,
+      isGroupChat: isGroupChat,
     });
 
     await chat.addUser(req.user, {
@@ -51,13 +55,18 @@ export async function postMessages(req, res, next) {
   var { chatId } = req.body;
 
   try {
-    var chat = await Chat.findByPk(chatId);
+    let chat = await Chat.findByPk(chatId);
+
+    let chatUser = await chat.getUsers({ where: { id: req.user.id } });
+    chatUser = chatUser[0];
+    chatUser.chatUser.seen = true;
+    await chatUser.chatUser.save();
 
     if (!chat) {
       return res.status(404).json({ message: "Chat not found" });
     }
 
-    var messages = await chat.getMessages({
+    let messages = await chat.getMessages({
       order: [["createdAt", "ASC"]],
       // include: [
       //   {
@@ -69,6 +78,38 @@ export async function postMessages(req, res, next) {
     });
 
     return res.status(200).json({ messages });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function postUsers(req, res, next) {
+  var { searchTerm, mode } = req.body;
+
+  try {
+    if (mode === "username") {
+      var users = await User.findAll({
+        where: {
+          username: {
+            [Op.and]: [
+              { [Op.ne]: req.user.username },
+              { [Op.substring]: searchTerm },
+            ],
+          },
+          exposure: true,
+        },
+        attributes: ["id", "username"],
+      });
+    } else if (mode === "token") {
+      var users = await User.findAll({
+        where: {
+          inviteToken: searchTerm,
+        },
+        attributes: ["id", "username"],
+      });
+    }
+
+    return res.status(200).json({ users });
   } catch (err) {
     next(err);
   }

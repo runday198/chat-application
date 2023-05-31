@@ -11,4 +11,6 @@ router.post("/create-chat", isAuth, chatCheck, chatControllers.postCreateChat);
 
 router.post("/messages", isAuth, chatControllers.postMessages);
 
+router.post("/users", isAuth, chatControllers.postUsers);
+
 export default router;

@@ -24,7 +24,7 @@ function CreateChat(props) {
             Authorization: "Bearer " + localStorage.getItem("token"),
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ name }),
+          body: JSON.stringify({ name, isGroupChat: true }),
         });
 
         let res = await resData.json();

@@ -15,11 +15,12 @@ function ChatHead(props) {
       }`}
       id={head.id}
       onClick={props.chatClickHandler}
+      data-seen={head.chatUser.seen}
     >
       <div className={styles["status-container"]}>
         <div
           className={`${styles["status-circle"]} ${
-            head.seen ? styles["passive"] : styles["active"]
+            head.chatUser.seen ? styles["passive"] : styles["active"]
           }`}
         />
       </div>

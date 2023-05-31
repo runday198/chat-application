@@ -8,8 +8,9 @@ function Message(props) {
       }`}
     >
       <div className={styles["message-info"]}>
-        <p className={styles["sender"]}>{props.sender}</p>
-        <p className={styles["time"]}>{props.date}</p>
+        {!props.sameSender && (
+          <p className={styles["sender"]}>{props.sender}</p>
+        )}
       </div>
       <div className={styles["message"]}>
         <p className={styles["message-text"]}>{props.message}</p>

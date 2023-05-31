@@ -31,7 +31,7 @@ function TopComponent(props) {
           <IoCreateOutline className={styles["group-icon"]} />
         </div>
       </div>
-      <SearchBar />
+      <SearchBar setSearchTerm={props.setSearchTerm} />
       <div className={styles["nav-container"]}>
         <div
           className={`${styles["nav-button"]} ${
