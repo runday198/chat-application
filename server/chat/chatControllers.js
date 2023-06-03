@@ -6,7 +6,7 @@ import { Op } from "sequelize";
 
 export async function getUser(req, res, next) {
   try {
-    let chats = await req.user.getChats();
+    let chats = await req.user.getChats({ order: [["updatedAt", "DESC"]] });
 
     return res.status(200).json({
       chats,

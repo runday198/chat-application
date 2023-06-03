@@ -5,6 +5,7 @@ import { IoAdd } from "react-icons/io5";
 function AddContact(props) {
   var [mode, setMode] = useState("username");
   var [results, setResults] = useState([]);
+  var { socket } = props;
 
   function modeOnClickHandler(event) {
     setMode(event.target.innerHTML.toLowerCase());
@@ -40,6 +41,21 @@ function AddContact(props) {
         console.log(err);
       }
     }
+  }
+
+  function addClickHandler(event) {
+    var userId = event.currentTarget.id;
+
+    socket.emit("add-contact", { userId });
+    socket.once("add-contact", (data) => {
+      var { chat } = data;
+
+      props.setChatHeads((chats) => {
+        return [...chats, chat];
+      });
+
+      props.setSelectedChat(chat.id);
+    });
   }
 
   return (
@@ -91,7 +107,11 @@ function AddContact(props) {
               return (
                 <li className={styles["result"]} key={result.id}>
                   <p className={styles["result-username"]}>{result.username}</p>
-                  <IoAdd className={styles["add-icon"]} />
+                  <IoAdd
+                    className={styles["add-icon"]}
+                    id={result.id}
+                    onClick={addClickHandler}
+                  />
                 </li>
               );
             })}

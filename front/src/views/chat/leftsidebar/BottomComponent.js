@@ -62,7 +62,13 @@ function BottomComponent(props) {
             Add Contacts
           </div>
         </div>
-        <Link to="/home/logout" className={styles["icon-container"]}>
+        <Link
+          to="/home/logout"
+          className={styles["icon-container"]}
+          onClick={() => {
+            socket.disconnect();
+          }}
+        >
           <FiLogOut className={`${styles["icon"]} ${styles["logout"]}`} />
         </Link>
       </div>

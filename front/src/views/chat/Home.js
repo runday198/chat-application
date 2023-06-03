@@ -36,7 +36,10 @@ function Home() {
   const [socket, setSocket] = useState(null);
   const [exposure, setExposure] = useState(user.exposure);
   const [createChat, setCreateChat] = useState(false);
-  const [selectedChat, setSelectedChat] = useState(null);
+  const [selectedChat, setSelectedChat] = useState({
+    id: -1,
+    isRequest: false,
+  });
   const [messages, setMessages] = useState([]);
   const [chatHeads, setChatHeads] = useState(
     loaderData.chats.filter((chatHead) => chatHead.chatUser.hasAccepted)
@@ -58,19 +61,49 @@ function Home() {
       console.log(data);
     });
 
+    socket.on("message", (data) => {
+      var { message, chatId } = data;
+
+      var updatedChat = chatHeads.find((chat) => chat.id === chatId);
+      updatedChat.lastMessage = message.message;
+      updatedChat.lastMessageSender = message.sender;
+      updatedChat.updatedAt = message.updatedAt;
+      updatedChat.chatUser.seen = false;
+
+      setChatHeads((chats) => {
+        var prevChats = chats.filter((chat) => chat.id !== chatId);
+        return [updatedChat, ...prevChats];
+      });
+    });
+
     socket.emit("hello", { message: "hello" });
   }, []);
 
   function chatClickHandler(event) {
     var chatId = event.currentTarget.id;
+    var isRequest = event.currentTarget.dataset.isrequest;
+    if (isRequest === "true") {
+      isRequest = true;
+    } else {
+      isRequest = false;
+    }
+
     var hasSeen = event.currentTarget.dataset.seen;
 
     fetchMessages().then((res) => {
       setMessages(res);
-      setSelectedChat(chatId);
+      setSelectedChat({ id: chatId, isRequest: isRequest });
 
       if (!hasSeen) {
         setChatHeads((chats) => {
+          return chats.map((chat) => {
+            if (chat.id === Number(chatId)) {
+              chat.seen = 1;
+            }
+            return chat;
+          });
+        });
+        setRequestHeads((chats) => {
           return chats.map((chat) => {
             if (chat.id === Number(chatId)) {
               chat.seen = 1;
@@ -124,8 +157,11 @@ function Home() {
         <Middle
           messages={messages}
           selectedChat={selectedChat}
+          setSelectedChat={setSelectedChat}
           socket={socket}
           setMessages={setMessages}
+          setChatHeads={setChatHeads}
+          setRequestHeads={setRequestHeads}
         />
         <Outlet test="test" />
         {createChat && (
@@ -134,7 +170,14 @@ function Home() {
             setChatHeads={setChatHeads}
           />
         )}
-        {addContact && <AddContact setAddContact={setAddContact} />}
+        {addContact && (
+          <AddContact
+            setAddContact={setAddContact}
+            socket={socket}
+            setChatHeads={setChatHeads}
+            setSelectedChat={setSelectedChat}
+          />
+        )}
       </div>
     </AuthContext.Provider>
   );

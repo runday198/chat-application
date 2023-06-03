@@ -34,6 +34,7 @@ const User = sequelize.define("user", {
     allowNull: false,
     defaultValue: true,
   },
+  socketId: Sequelize.STRING,
 });
 
 export default User;

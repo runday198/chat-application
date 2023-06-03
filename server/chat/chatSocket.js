@@ -44,7 +44,7 @@ export function initializeSocket(httpServer) {
         },
       });
       user.status = true;
-
+      user.socketId = socket.id;
       user.save();
 
       user.chats.forEach((chat) => {

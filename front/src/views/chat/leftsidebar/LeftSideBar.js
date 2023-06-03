@@ -9,7 +9,7 @@ function LeftSideBar(props) {
   var [activeCategory, setActiveCategory] = useState("Inbox");
   var [searchTerm, setSearchTerm] = useState("");
 
-  var { chats } = props;
+  var { chats, requests } = props;
 
   if (searchTerm !== "") {
     chats = chats.filter((chat) => {
@@ -40,7 +40,7 @@ function LeftSideBar(props) {
 
       {activeCategory === "Requests" && (
         <MiddleComponent
-          chats={props.requests}
+          chats={requests}
           chatClickHandler={props.chatClickHandler}
           selectedChat={props.selectedChat}
         />

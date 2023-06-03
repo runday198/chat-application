@@ -3,7 +3,7 @@ import styles from "./ChatHead.module.css";
 
 function ChatHead(props) {
   var { head } = props;
-  var isSelected = head.id === Number(props.selectedChat);
+  var isSelected = head.id === Number(props.selectedChat.id);
   var date = new Date(head.updatedAt);
 
   date = convertDate(date);
@@ -16,6 +16,7 @@ function ChatHead(props) {
       id={head.id}
       onClick={props.chatClickHandler}
       data-seen={head.chatUser.seen}
+      data-isrequest={!head.chatUser.hasAccepted}
     >
       <div className={styles["status-container"]}>
         <div
@@ -28,7 +29,7 @@ function ChatHead(props) {
         <p className={styles["chat-name"]}>{head.name}</p>
         <p
           className={`${styles["last-message"]} ${
-            head.seen ? styles["passive"] : styles["active"]
+            head.chatUser.seen ? styles["passive"] : styles["active"]
           }`}
         >
           {head.sender}

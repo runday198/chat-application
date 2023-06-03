@@ -33,9 +33,22 @@ function MessageBox(props) {
           },
         ];
       });
+
+      props.setChatHeads((prev) => {
+        let chat = prev.find((chat) => chat.id === Number(selectedChat.id));
+        console.log(chat);
+        chat.lastMessage = message;
+        chat.sender = user.username;
+
+        let otherChats = prev.filter(
+          (chat) => chat.id !== Number(selectedChat.id)
+        );
+        return [chat, ...otherChats];
+      });
+
       socket.emit("message", {
         message: message,
-        chatId: selectedChat,
+        chatId: selectedChat.id,
       });
     }
   }
