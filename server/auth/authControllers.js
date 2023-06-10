@@ -45,7 +45,6 @@ export async function postLogin(req, res, next) {
 
   try {
     let token = jwt.sign({ userId: req.user.id }, process.env.JWT_SECRET);
-
     return res.status(200).json({ token });
   } catch (err) {
     let error = new Api500Error(err);

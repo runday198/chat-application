@@ -12,8 +12,10 @@ export default async function isAuth(req, res, next) {
     }
 
     let token = authHeader.split(" ")[1];
+    if (!token) {
+      return res.status(400).json({ success: false });
+    }
 
-    console.log("HERE");
     let isLoggedIn = jwt.verify(token, process.env.JWT_SECRET);
     let userId = isLoggedIn.userId;
 

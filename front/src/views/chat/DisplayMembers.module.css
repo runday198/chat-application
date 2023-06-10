@@ -1,0 +1,123 @@
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+
+  background-color: rgba(0, 0, 0, 0.8);
+
+  height: 100vh;
+  width: 100vw;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.members-container {
+  width: 30%;
+  height: 65%;
+  padding: 1rem;
+
+  background-color: #343a40;
+  color: #eeeeee;
+  border-radius: 0.6rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.members-header {
+  color: #eeeeee;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+.results-container {
+  height: 70%;
+  width: 80%;
+  border-radius: 0.6rem;
+  overflow-x: auto;
+  padding: 1rem;
+
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid #495057;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.result {
+  width: 100%;
+  border-radius: 0.6rem;
+  padding: 0.6rem 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font-size: 1.4rem;
+}
+
+.result:hover {
+  cursor: pointer;
+  background-color: #495057;
+}
+
+.admin {
+  color: #ffc107;
+}
+
+.add-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.remove-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.add-icon:hover {
+  cursor: pointer;
+
+  color: rgb(0, 197, 0);
+}
+
+.remove-icon:hover {
+  color: rgb(255, 50, 50) !important;
+}
+
+.action-container {
+  display: flex;
+  align-items: center;
+
+  gap: 0.5rem;
+}
+
+.close-button {
+  align-self: flex-end;
+  margin-right: 10%;
+
+  background-color: #eeeeee;
+  color: #212529;
+
+  padding: 0.6rem 1rem;
+  border-radius: 0.6rem;
+}
+
+.close-button:hover {
+  cursor: pointer;
+  background-color: #dddddd;
+  color: #212529;
+}

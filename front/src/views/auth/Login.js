@@ -10,7 +10,7 @@ import ErrorMessage from "../../components/result/ErrorMessage";
 export async function action({ request }) {
   try {
     let formData = await request.formData();
-
+    console.log("LOGIN");
     let email = formData.get("email");
     let password = formData.get("password");
 
@@ -24,7 +24,7 @@ export async function action({ request }) {
         password,
       }),
     });
-
+    console.log(resData.status);
     let res = await resData.json();
     if (resData.status === 400) {
       return { ...res, source: "client" };

@@ -1,11 +1,19 @@
 import styles from "./ChatDisplay.module.css";
 import Message from "./Message";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 
 import { AuthContext } from "../../../contexts";
 
 function ChatDisplay(props) {
   var { messages } = props;
+
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  scrollToBottom();
 
   var user = useContext(AuthContext);
 
@@ -31,6 +39,7 @@ function ChatDisplay(props) {
           />
         );
       })}
+      <div ref={messagesEndRef} />
     </div>
   );
 }

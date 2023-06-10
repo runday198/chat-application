@@ -1,4 +1,4 @@
-import { Outlet, useLoaderData } from "react-router-dom";
+import { Outlet, useLoaderData, redirect } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { AuthContext } from "../../contexts";
@@ -9,9 +9,16 @@ import LeftSideBar from "./leftsidebar/LeftSideBar";
 import Middle from "./middle/Middle";
 import CreateChat from "./CreateChat";
 import AddContact from "./AddContact";
+import DisplayMembers from "./DisplayMembers";
 
 export async function loader() {
   try {
+    let token = localStorage.getItem("token");
+
+    if (!token) {
+      return redirect("/login");
+    }
+
     let resData = await fetch("http://localhost:5000/user", {
       method: "POST",
       headers: {
@@ -20,6 +27,10 @@ export async function loader() {
     });
 
     let res = await resData.json();
+
+    if (!res.success) {
+      return redirect("/login");
+    }
 
     return res;
   } catch (err) {
@@ -32,6 +43,7 @@ function Home() {
   var loaderData = useLoaderData();
   var user = loaderData.user;
 
+  const [showMembers, setShowMembers] = useState(false);
   const [addContact, setAddContact] = useState(false);
   const [socket, setSocket] = useState(null);
   const [exposure, setExposure] = useState(user.exposure);
@@ -39,6 +51,7 @@ function Home() {
   const [selectedChat, setSelectedChat] = useState({
     id: -1,
     isRequest: false,
+    isAdmin: false,
   });
   const [messages, setMessages] = useState([]);
   const [chatHeads, setChatHeads] = useState(
@@ -48,6 +61,8 @@ function Home() {
     loaderData.chats.filter((chatHeads) => !chatHeads.chatUser.hasAccepted)
   );
 
+  console.log(chatHeads);
+
   useEffect(() => {
     let socket = io("http://localhost:5000", {
       auth: {
@@ -56,10 +71,6 @@ function Home() {
     });
 
     setSocket(socket);
-
-    socket.on("hello", (data) => {
-      console.log(data);
-    });
 
     socket.on("message", (data) => {
       var { message, chatId } = data;
@@ -74,31 +85,36 @@ function Home() {
         var prevChats = chats.filter((chat) => chat.id !== chatId);
         return [updatedChat, ...prevChats];
       });
+
+      if (selectedChat.id == chatId) {
+        setMessages((messages) => {
+          return [...messages, message];
+        });
+      }
     });
 
-    socket.emit("hello", { message: "hello" });
-  }, []);
+    return () => {
+      socket.close();
+    };
+  }, [selectedChat]);
 
   function chatClickHandler(event) {
     var chatId = event.currentTarget.id;
-    var isRequest = event.currentTarget.dataset.isrequest;
-    if (isRequest === "true") {
-      isRequest = true;
-    } else {
-      isRequest = false;
-    }
+    var isRequest =
+      event.currentTarget.dataset.isrequest === "true" ? true : false;
 
-    var hasSeen = event.currentTarget.dataset.seen;
+    var isAdmin = event.currentTarget.dataset.isadmin === "true" ? true : false;
+
+    var hasSeen = event.currentTarget.dataset.seen === "true" ? true : false;
 
     fetchMessages().then((res) => {
       setMessages(res);
-      setSelectedChat({ id: chatId, isRequest: isRequest });
-
+      setSelectedChat({ id: chatId, isRequest: isRequest, isAdmin: isAdmin });
       if (!hasSeen) {
         setChatHeads((chats) => {
           return chats.map((chat) => {
             if (chat.id === Number(chatId)) {
-              chat.seen = 1;
+              chat.chatUser.seen = 1;
             }
             return chat;
           });
@@ -162,6 +178,7 @@ function Home() {
           setMessages={setMessages}
           setChatHeads={setChatHeads}
           setRequestHeads={setRequestHeads}
+          setShowMembers={setShowMembers}
         />
         <Outlet test="test" />
         {createChat && (
@@ -179,6 +196,13 @@ function Home() {
           />
         )}
       </div>
+      {showMembers && (
+        <DisplayMembers
+          setShowMembers={setShowMembers}
+          chat={chatHeads.filter((chat) => chat.id === Number(selectedChat.id))}
+          selectedChat={selectedChat}
+        />
+      )}
     </AuthContext.Provider>
   );
 }

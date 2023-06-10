@@ -5,18 +5,25 @@ function RequireAuth(props) {
   var navigate = useNavigate();
 
   useEffect(() => {
+    let token = localStorage.getItem("token");
+
+    if (!token) {
+      return navigate("/login");
+    }
+
     async function fetchAuth() {
       let resData = await fetch("http://localhost:5000/check-auth", {
         method: "POST",
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorization: "Bearer " + token,
         },
       });
       let res = await resData.json();
       if (!res.success) {
-        navigate("/login");
+        return navigate("/login");
       }
     }
+
     fetchAuth();
   }, []); //eslint-disable-line
 

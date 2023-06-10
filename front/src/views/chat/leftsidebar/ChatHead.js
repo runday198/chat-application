@@ -17,6 +17,7 @@ function ChatHead(props) {
       onClick={props.chatClickHandler}
       data-seen={head.chatUser.seen}
       data-isrequest={!head.chatUser.hasAccepted}
+      data-isadmin={head.chatUser.isAdmin}
     >
       <div className={styles["status-container"]}>
         <div

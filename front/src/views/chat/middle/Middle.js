@@ -5,12 +5,16 @@ import MessageBox from "./MessageBox";
 import Accept from "./Accept";
 
 function Middle(props) {
-  console.log(props.selectedChat);
   return (
     <div className={styles["middle-container"]}>
-      <MiddleTop />
+      {props.selectedChat.id !== -1 && (
+        <MiddleTop
+          selectedChat={props.selectedChat}
+          setShowMembers={props.setShowMembers}
+        />
+      )}
       <MiddleChat messages={props.messages} selectedChat={props.selectedChat} />
-      {!props.selectedChat.isRequest && (
+      {!props.selectedChat.isRequest && props.selectedChat.id !== -1 && (
         <MessageBox
           selectedChat={props.selectedChat}
           socket={props.socket}
@@ -18,7 +22,7 @@ function Middle(props) {
           setChatHeads={props.setChatHeads}
         />
       )}
-      {props.selectedChat.isRequest && (
+      {props.selectedChat.isRequest && props.selectedChat.id !== -1 && (
         <Accept
           setRequestHeads={props.setRequestHeads}
           selectedChat={props.selectedChat}

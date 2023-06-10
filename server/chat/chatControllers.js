@@ -6,7 +6,10 @@ import { Op } from "sequelize";
 
 export async function getUser(req, res, next) {
   try {
-    let chats = await req.user.getChats({ order: [["updatedAt", "DESC"]] });
+    let chats = await req.user.getChats({
+      order: [["updatedAt", "DESC"]],
+      include: [{ model: User, as: "users", attributes: ["id", "username"] }],
+    });
 
     return res.status(200).json({
       chats,
@@ -18,6 +21,7 @@ export async function getUser(req, res, next) {
         exposure: req.user.exposure,
         inviteToken: req.user.inviteToken,
       },
+      success: true,
     });
   } catch (err) {
     let error = new Api500Error(err);
