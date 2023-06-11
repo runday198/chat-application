@@ -14,6 +14,8 @@ function registerChatHandlers(io, socket) {
 
   socket.on("add-contact", addContact);
 
+  socket.on("add-member", addMember);
+
   socket.on("accept-request", acceptRequest);
 
   socket.on("make-admin", makeAdmin);
@@ -86,6 +88,29 @@ function registerChatHandlers(io, socket) {
       }
 
       socket.emit("add-contact", { chat: chat, contact: contact });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function addMember(data) {
+    var { userId, chatId } = data;
+
+    try {
+      let contact = await User.findByPk(userId);
+      let chat = await Chat.findByPk(chatId);
+
+      await contact.addChat(chat, {
+        through: { hasAccepted: false, isAdmin: false, seen: false },
+      });
+
+      console.log(contact);
+
+      if (contact.status) {
+        io.connected[contact.socketId].join("chat:" + chat.id);
+      }
+
+      socket.emit("add-member", { chat: chat, contact: contact });
     } catch (err) {
       console.log(err);
     }

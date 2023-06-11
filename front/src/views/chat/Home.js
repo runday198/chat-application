@@ -210,7 +210,14 @@ function Home() {
           }
         />
       )}
-      {showAddMembers && <AddMember setShowAddMembers={setShowAddMembers} />}
+      {showAddMembers && (
+        <AddMember
+          setShowAddMembers={setShowAddMembers}
+          socket={socket}
+          setChatHeads={setChatHeads}
+          selectedChat={selectedChat}
+        />
+      )}
     </AuthContext.Provider>
   );
 }

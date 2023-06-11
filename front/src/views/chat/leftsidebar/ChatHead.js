@@ -8,6 +8,8 @@ function ChatHead(props) {
 
   date = convertDate(date);
 
+  console.log(head);
+
   return (
     <div
       className={`${styles["head-container"]} ${

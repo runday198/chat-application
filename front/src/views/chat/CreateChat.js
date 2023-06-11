@@ -32,6 +32,7 @@ function CreateChat(props) {
         if (resData.status === 201) {
           props.setChatHeads((prev) => [...prev, res.chat]);
           props.setCreateChat(false);
+          return;
         }
 
         return { error: res.errors.name.msg };

@@ -13,17 +13,16 @@ function AddContact(props) {
 
   function submitHandler(event) {
     event.preventDefault();
-    var searchTerm;
-    if (mode === "username") {
-      searchTerm = event.target.username.value;
-    } else {
-      searchTerm = event.target.token.value;
-    }
+    var searchTerm =
+      mode === "username"
+        ? event.target.username.value
+        : event.target.token.value;
+
     fetchResults();
 
     async function fetchResults() {
       try {
-        var resData = await fetch("http://localhost:5000/users", {
+        let resData = await fetch("http://localhost:5000/users", {
           method: "POST",
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
@@ -32,7 +31,7 @@ function AddContact(props) {
           body: JSON.stringify({ searchTerm, mode }),
         });
 
-        var res = await resData.json();
+        let res = await resData.json();
 
         if (resData.status === 200) {
           setResults(res.users);

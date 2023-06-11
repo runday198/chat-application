@@ -4,7 +4,58 @@ import { IoAdd } from "react-icons/io5";
 
 function AddMember(props) {
   const [mode, setMode] = useState("username");
-  var { setShowAddMembers } = props;
+  const [results, setResults] = useState([]);
+
+  var { setShowAddMembers, socket, setChatHeads, selectedChat } = props;
+
+  function submitHandler(event) {
+    event.preventDefault();
+    var searchTerm =
+      mode === "username"
+        ? event.target.username.value
+        : event.target.token.value;
+
+    fetchResults();
+
+    async function fetchResults() {
+      try {
+        let resData = await fetch("http://localhost:5000/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+          body: JSON.stringify({ searchTerm, mode }),
+        });
+
+        let res = await resData.json();
+
+        if (resData.status === 200) {
+          setResults(res.users);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+
+  function addMemberClickHandler(event) {
+    var userId = event.currentTarget.id;
+
+    socket.emit("add-member", { userId, chatId: selectedChat.id });
+    socket.once("add-member", (data) => {
+      var { chat } = data;
+
+      setChatHeads((chats) => {
+        return chats.map((chatHead) => {
+          if (chatHead.id === chat.id) {
+            return chat;
+          }
+          return chatHead;
+        });
+      });
+    });
+  }
 
   return (
     <div className={styles["overlay"]}>
@@ -12,7 +63,7 @@ function AddMember(props) {
         <div className={styles["add-member-header"]}>
           <h2>Add Member</h2>
         </div>
-        <form className={styles["add-member-form"]}>
+        <form className={styles["add-member-form"]} onSubmit={submitHandler}>
           <div className={styles["input-container"]}>
             <div className={styles["mode-container"]}>
               <p className={styles["mode-text"]}>Search By: </p>
@@ -51,10 +102,18 @@ function AddMember(props) {
         </form>
         <div className={styles["results-container"]}>
           <ul className={styles["results"]}>
-            <li className={styles["result"]}>
-              <p className={styles["result-username"]}>Username</p>
-              <IoAdd className={styles["add-icon"]} />
-            </li>
+            {results.map((result) => {
+              return (
+                <li className={styles["result"]} key={result.id} id={result.id}>
+                  <p className={styles["result-username"]}>{result.username}</p>
+                  <IoAdd
+                    className={styles["add-icon"]}
+                    id={result.id}
+                    onClick={addMemberClickHandler}
+                  />
+                </li>
+              );
+            })}
           </ul>
         </div>
         <button
