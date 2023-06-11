@@ -82,7 +82,7 @@ export async function postMessages(req, res, next) {
       // ],
     });
 
-    return res.status(200).json({ messages });
+    return res.status(200).json({ messages, chat });
   } catch (err) {
     next(err);
   }

@@ -50,12 +50,14 @@ function DisplayMembers(props) {
                         onClick={adminOnClickHandler}
                       />
                     )}
-                    {!user.chatUser.isAdmin && props.selectedChat.isAdmin && (
-                      <MdOutlinePersonRemoveAlt1
-                        className={`${styles["remove-icon"]}`}
-                        id={user.id}
-                      />
-                    )}
+                    {!user.chatUser.isAdmin &&
+                      props.selectedChat.isAdmin &&
+                      chat.isGroupChat && (
+                        <MdOutlinePersonRemoveAlt1
+                          className={`${styles["remove-icon"]}`}
+                          id={user.id}
+                        />
+                      )}
                   </div>
                 </li>
               );

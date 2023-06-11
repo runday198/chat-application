@@ -10,6 +10,7 @@ import Middle from "./middle/Middle";
 import CreateChat from "./CreateChat";
 import AddContact from "./AddContact";
 import DisplayMembers from "./DisplayMembers";
+import AddMember from "./AddMember";
 
 export async function loader() {
   try {
@@ -43,6 +44,7 @@ function Home() {
   var loaderData = useLoaderData();
   var user = loaderData.user;
 
+  const [showAddMembers, setShowAddMembers] = useState(false);
   const [showMembers, setShowMembers] = useState(false);
   const [addContact, setAddContact] = useState(false);
   const [socket, setSocket] = useState(null);
@@ -108,8 +110,8 @@ function Home() {
     var hasSeen = event.currentTarget.dataset.seen === "true" ? true : false;
 
     fetchMessages().then((res) => {
-      setMessages(res);
-      setSelectedChat({ id: chatId, isRequest: isRequest, isAdmin: isAdmin });
+      setMessages(res.messages);
+      setSelectedChat({ ...res.chat, isRequest, isAdmin });
       if (!hasSeen) {
         setChatHeads((chats) => {
           return chats.map((chat) => {
@@ -144,10 +146,10 @@ function Home() {
         let res = await resData.json();
 
         if (resData.status === 200) {
-          return res.messages;
+          return res;
         }
 
-        return [];
+        return { messages: [], chat: {} };
       } catch (err) {
         console.log(err);
         return [];
@@ -179,6 +181,7 @@ function Home() {
           setChatHeads={setChatHeads}
           setRequestHeads={setRequestHeads}
           setShowMembers={setShowMembers}
+          setShowAddMembers={setShowAddMembers}
         />
         <Outlet test="test" />
         {createChat && (
@@ -207,6 +210,7 @@ function Home() {
           }
         />
       )}
+      {showAddMembers && <AddMember setShowAddMembers={setShowAddMembers} />}
     </AuthContext.Provider>
   );
 }

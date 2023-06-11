@@ -11,6 +11,7 @@ function Middle(props) {
         <MiddleTop
           selectedChat={props.selectedChat}
           setShowMembers={props.setShowMembers}
+          setShowAddMembers={props.setShowAddMembers}
         />
       )}
       <MiddleChat messages={props.messages} selectedChat={props.selectedChat} />

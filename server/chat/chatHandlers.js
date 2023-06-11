@@ -123,6 +123,7 @@ function registerChatHandlers(io, socket) {
       let chatUser = chat.users[0];
 
       chatUser.chatUser.isAdmin = true;
+
       await chatUser.chatUser.save();
     } catch (err) {
       console.log(err);

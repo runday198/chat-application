@@ -6,6 +6,8 @@ function MiddleTop(props) {
   // return a div that will contain the chat header and will be above the chat box
   const [showSettings, setShowSettings] = useState(false);
 
+  var { setShowAddMembers } = props;
+
   return (
     <div className={styles["middle-top-container"]}>
       <div className={styles["chat-header"]}>
@@ -30,7 +32,15 @@ function MiddleTop(props) {
               Members
             </div>
             {props.selectedChat.isAdmin && (
-              <div className={styles["setting-item"]}>Add Member</div>
+              <div
+                className={styles["setting-item"]}
+                onClick={() => {
+                  setShowAddMembers(true);
+                  setShowSettings(false);
+                }}
+              >
+                Add Member
+              </div>
             )}
           </div>
         )}
