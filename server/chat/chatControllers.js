@@ -86,7 +86,8 @@ export async function postMessages(req, res, next) {
   var { chatId } = req.body;
 
   try {
-    let chat = await Chat.findByPk(chatId);
+    let chat = await req.user.getChats({ where: { id: chatId } });
+    chat = chat[0];
 
     let chatUser = await chat.getUsers({ where: { id: req.user.id } });
     chatUser = chatUser[0];

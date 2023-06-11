@@ -63,8 +63,6 @@ function Home() {
     loaderData.chats.filter((chatHeads) => !chatHeads.chatUser.hasAccepted)
   );
 
-  console.log(chatHeads);
-
   useEffect(() => {
     let socket = io("http://localhost:5000", {
       auth: {
