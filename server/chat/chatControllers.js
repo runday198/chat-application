@@ -50,15 +50,33 @@ export async function postCreateChat(req, res, next) {
       through: { isAdmin: true, hasAccepted: true },
     });
 
+    // attach the chat user to the chat
+    // let chatUser = await ChatUser.findOne({
+    //   where: { userId: req.user.id, chatId: chat.id },
+    // });
+
+    // chat.dataValues.chatUser = chatUser;
+
+    let chatWithUser = await Chat.findOne({
+      where: { id: chat.id },
+      include: [
+        {
+          model: User,
+          as: "users",
+          attributes: ["id", "username"],
+        },
+      ],
+    });
+
     let chatUser = await ChatUser.findOne({
       where: { userId: req.user.id, chatId: chat.id },
     });
 
-    chat.dataValues.chatUser = chatUser;
+    console.log(chatWithUser);
 
-    console.log(chat);
+    chatWithUser.dataValues.chatUser = chatUser;
 
-    return res.status(201).json({ chat: chat });
+    return res.status(201).json({ chat: chatWithUser });
   } catch (err) {
     next(err);
   }
