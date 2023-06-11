@@ -72,6 +72,7 @@ export async function postMessages(req, res, next) {
 
     let messages = await chat.getMessages({
       order: [["createdAt", "ASC"]],
+      limit: 50,
       // include: [
       //   {
       //     model: req.user,

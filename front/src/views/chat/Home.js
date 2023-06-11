@@ -201,6 +201,10 @@ function Home() {
           setShowMembers={setShowMembers}
           chat={chatHeads.filter((chat) => chat.id === Number(selectedChat.id))}
           selectedChat={selectedChat}
+          socket={socket}
+          setChatHeads={
+            !selectedChat.isRequest ? setChatHeads : setRequestHeads
+          }
         />
       )}
     </AuthContext.Provider>

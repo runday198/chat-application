@@ -5,8 +5,27 @@ import {
 } from "react-icons/md";
 
 function DisplayMembers(props) {
-  var { chat } = props;
+  var { chat, socket, setChatHeads } = props;
   chat = chat[0];
+
+  function adminOnClickHandler(event) {
+    var id = event.currentTarget.id;
+    socket.emit("make-admin", { chatId: chat.id, userId: id });
+
+    setChatHeads((chats) => {
+      return chats.map((chat) => {
+        if (chat.id === Number(chat.id)) {
+          chat.users = chat.users.map((user) => {
+            if (user.id === Number(id)) {
+              user.chatUser.isAdmin = true;
+            }
+            return user;
+          });
+        }
+        return chat;
+      });
+    });
+  }
 
   return (
     <div className={styles["overlay"]}>
@@ -27,11 +46,14 @@ function DisplayMembers(props) {
                     {!user.chatUser.isAdmin && props.selectedChat.isAdmin && (
                       <MdOutlineAdminPanelSettings
                         className={styles["add-icon"]}
+                        id={user.id}
+                        onClick={adminOnClickHandler}
                       />
                     )}
                     {!user.chatUser.isAdmin && props.selectedChat.isAdmin && (
                       <MdOutlinePersonRemoveAlt1
                         className={`${styles["remove-icon"]}`}
+                        id={user.id}
                       />
                     )}
                   </div>

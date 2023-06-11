@@ -16,6 +16,8 @@ function registerChatHandlers(io, socket) {
 
   socket.on("accept-request", acceptRequest);
 
+  socket.on("make-admin", makeAdmin);
+
   socket.on("disconnect", disconnect);
 
   async function setExposure(data) {
@@ -102,6 +104,26 @@ function registerChatHandlers(io, socket) {
 
       userChat.hasAccepted = true;
       await userChat.save();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function makeAdmin(data) {
+    var { chatId, userId } = data;
+
+    try {
+      let chat = await Chat.findByPk(chatId, {
+        include: {
+          model: User,
+          as: "users",
+          through: { where: { userId: userId } },
+        },
+      });
+      let chatUser = chat.users[0];
+
+      chatUser.chatUser.isAdmin = true;
+      await chatUser.chatUser.save();
     } catch (err) {
       console.log(err);
     }
