@@ -30,9 +30,9 @@ function CreateChat(props) {
         let res = await resData.json();
 
         if (resData.status === 201) {
-          props.setChatHeads((prev) => [...prev, res.chat]);
+          props.setChatHeads((prev) => [res.chat, ...prev]);
           props.setCreateChat(false);
-          return;
+          return { error: false };
         }
 
         return { error: res.errors.name.msg };

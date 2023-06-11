@@ -3,6 +3,7 @@ import Chat from "../models/chat.js";
 import { validationResult } from "express-validator";
 import User from "../models/user.js";
 import { Op } from "sequelize";
+import ChatUser from "../models/chatUser.js";
 
 export async function getUser(req, res, next) {
   try {
@@ -40,7 +41,7 @@ export async function postCreateChat(req, res, next) {
   var { name } = req.body;
 
   try {
-    var chat = await Chat.create({
+    let chat = await Chat.create({
       name: name,
       isGroupChat: isGroupChat,
     });
@@ -48,6 +49,14 @@ export async function postCreateChat(req, res, next) {
     await chat.addUser(req.user, {
       through: { isAdmin: true, hasAccepted: true },
     });
+
+    let chatUser = await ChatUser.findOne({
+      where: { userId: req.user.id, chatId: chat.id },
+    });
+
+    chat.dataValues.chatUser = chatUser;
+
+    console.log(chat);
 
     return res.status(201).json({ chat: chat });
   } catch (err) {
