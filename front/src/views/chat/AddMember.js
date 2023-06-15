@@ -96,6 +96,7 @@ function AddMember(props) {
               id={mode}
               className={styles["input-field"]}
               placeholder={`Enter a ${mode}`}
+              autoComplete="off"
             />
           </div>
           <button type="submit" className={styles["submit-button"]}>

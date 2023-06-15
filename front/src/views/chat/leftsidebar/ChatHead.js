@@ -6,6 +6,12 @@ function ChatHead(props) {
   var isSelected = head.id === Number(props.selectedChat.id);
   var date = new Date(head.updatedAt);
 
+  console.log(head);
+
+  if (!head.chatUser) {
+    head.chatUser = head.users[0].chatUser;
+  }
+
   date = convertDate(date);
 
   return (

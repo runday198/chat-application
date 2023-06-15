@@ -40,6 +40,12 @@ function registerChatHandlers(io, socket) {
       let user = await User.findByPk(socket.user.id);
       let chat = await Chat.findByPk(chatId);
 
+      let chatUser = await ChatUser.findOne({
+        where: { userId: user.id, chatId: chat.id },
+      });
+
+      chatUser.seen = true;
+
       let newMessage = await Message.create({
         message: message,
         userId: user.id,
@@ -49,7 +55,9 @@ function registerChatHandlers(io, socket) {
 
       chat.lastMessage = message;
       chat.sender = user.username;
+
       await chat.save();
+      await chatUser.save();
 
       socket.broadcast.to("chat:" + chat.id).emit("message", {
         message: newMessage,
@@ -81,13 +89,38 @@ function registerChatHandlers(io, socket) {
         through: { hasAccepted: false, isAdmin: true, seen: false },
       });
 
+      let chatWithUser = await Chat.findOne({
+        where: { id: chat.id },
+        include: [
+          {
+            model: User,
+            as: "users",
+            through: ChatUser,
+            where: { id: user.id },
+          },
+        ],
+      });
+
+      let chatWithContact = await Chat.findOne({
+        where: { id: chat.id },
+        include: [
+          {
+            model: User,
+            as: "users",
+            through: ChatUser,
+            where: { id: contact.id },
+          },
+        ],
+      });
+
       // Add both sockets to the room
       socket.join("chat:" + chat.id);
       if (contact.status) {
         io.in(contact.socketId).socketsJoin("chat:" + chat.id);
+        io.to(contact.socketId).emit("request", { chat: chatWithContact });
       }
 
-      socket.emit("add-contact", { chat: chat, contact: contact });
+      socket.emit("add-contact", { chat: chatWithUser, contact: contact });
     } catch (err) {
       console.log(err);
     }
@@ -109,8 +142,15 @@ function registerChatHandlers(io, socket) {
         through: { hasAccepted: false, isAdmin: false, seen: false },
       });
 
+      let contactChat = await contact.getChats({
+        where: { id: chatId },
+        include: [{ model: User, as: "users" }],
+      });
+      contactChat = contactChat[0];
+
       if (contact.status) {
         io.in(contact.socketId).socketsJoin("chat:" + chat.id);
+        io.to(contact.socketId).emit("request", { chat: contactChat });
       }
 
       socket.emit("add-member", { chat: chat, contact: contact });

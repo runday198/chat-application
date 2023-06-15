@@ -9,6 +9,7 @@ function SearchBar(props) {
         name="search"
         placeholder="Search..."
         onChange={(event) => props.setSearchTerm(event.target.value)}
+        autoComplete="off"
       />
     </div>
   );

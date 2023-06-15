@@ -57,6 +57,7 @@ function CreateChat(props) {
               name="name"
               id="name"
               className={styles["name"]}
+              autoComplete="off"
             />
             {error && <ErrorMessage message={error} />}
           </div>

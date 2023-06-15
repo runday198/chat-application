@@ -76,6 +76,9 @@ function Home() {
       var { message, chatId } = data;
 
       var updatedChat = chatHeads.find((chat) => chat.id === chatId);
+      if (!updatedChat) {
+        return;
+      }
       updatedChat.lastMessage = message.message;
       updatedChat.lastMessageSender = message.sender;
       updatedChat.updatedAt = message.updatedAt;
@@ -91,6 +94,14 @@ function Home() {
           return [...messages, message];
         });
       }
+    });
+
+    socket.on("request", (data) => {
+      var { chat } = data;
+
+      setRequestHeads((chats) => {
+        return [chat, ...chats];
+      });
     });
 
     return () => {

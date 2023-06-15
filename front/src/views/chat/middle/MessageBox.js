@@ -39,6 +39,7 @@ function MessageBox(props) {
         console.log(chat);
         chat.lastMessage = message;
         chat.sender = user.username;
+        chat.chatUser.seen = true;
 
         let otherChats = prev.filter(
           (chat) => chat.id !== Number(selectedChat.id)
@@ -67,6 +68,7 @@ function MessageBox(props) {
         id="message"
         rows="5"
         ref={inputRef}
+        autoComplete="off"
       />
       <div className={styles["button-container"]}>
         {/* <MdOutlineAttachment className={styles["attachment-icon"]} /> */}
