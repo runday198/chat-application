@@ -11,7 +11,9 @@ function MiddleTop(props) {
   return (
     <div className={styles["middle-top-container"]}>
       <div className={styles["chat-header"]}>
-        <h2 className={styles["chat-header-text"]}>Chat header</h2>
+        <h2 className={styles["chat-header-text"]}>
+          {props.selectedChat.name}
+        </h2>
       </div>
       <div className={styles["chat-settings"]}>
         <FiSettings

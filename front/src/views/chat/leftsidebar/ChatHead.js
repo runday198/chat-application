@@ -1,15 +1,26 @@
 import convertDate from "../../../helpers/convertDate";
 import styles from "./ChatHead.module.css";
+import { useContext } from "react";
+import { AuthContext } from "../../../contexts";
 
 function ChatHead(props) {
   var { head } = props;
   var isSelected = head.id === Number(props.selectedChat.id);
   var date = new Date(head.updatedAt);
 
+  var user = useContext(AuthContext);
+
   console.log(head);
 
   if (!head.chatUser) {
     head.chatUser = head.users[0].chatUser;
+  }
+
+  if (!head.isGroupChat) {
+    let contact = head.users.find(
+      (chatUser) => chatUser.username !== user.username
+    );
+    head.name = contact.username;
   }
 
   date = convertDate(date);
